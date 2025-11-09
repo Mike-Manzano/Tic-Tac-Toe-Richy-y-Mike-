@@ -9,5 +9,8 @@ package com.mycompany.proyecto_tic_tac_toe;
  * @author mikew
  */
 public class Prueba_Git {
+    public static void main(String[] args) {
+        System.out.println("Hola esto es una prueba");
+    }
     
 }
