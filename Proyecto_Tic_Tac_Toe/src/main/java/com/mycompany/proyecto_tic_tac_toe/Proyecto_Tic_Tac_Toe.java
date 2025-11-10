@@ -198,4 +198,33 @@ public class Proyecto_Tic_Tac_Toe {
             return false;
         }
     }
+     public static boolean ganar(char tablero[][]) {
+
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length; j++) {
+                if (j == 0) {
+                    if (tablero[i][j] == tablero[i][j + 1] && tablero[i][j] == tablero[i][j + 2]) {
+                        return true;
+                    }
+
+                }
+                if (i == 0) {
+                    if (tablero[i][j] == tablero[i + 1][j] && tablero[i][j] == tablero[i + 2][j]) {
+                        return true;
+                    }
+                }
+                if (j == 1 && i == 1) {
+                    if (tablero[i][j] == tablero[i - 1][j - 1] && tablero[i][j] == tablero[i + 1][j + 1]) {
+                        return true;
+                    }
+                    if (tablero[i][j] == tablero[i - 1][j + 1] && tablero[i][j] == tablero[i + 1][j - 1]) {
+                        return true;
+                    }
+                }
+
+            }
+        }
+        return false;
+
+    }
 }
