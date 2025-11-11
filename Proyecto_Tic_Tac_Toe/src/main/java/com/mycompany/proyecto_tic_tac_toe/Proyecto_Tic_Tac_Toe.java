@@ -11,7 +11,6 @@ import java.util.Scanner;
  */
 public class Proyecto_Tic_Tac_Toe {
 
-    
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Comenzamos proyecto Tres En Raya");
@@ -28,8 +27,8 @@ public class Proyecto_Tic_Tac_Toe {
         }
 
         turnoColocar(ficha, tablero);//Jugamos turnos hasta colocar 3 fichas.
-        if (!ganar(tablero)){//Si al colocar 3 fichas nadie ha ganado, procedemos a moverlas
-        turnoMover(ficha, tablero);//Se siguen moviendo piezas hasta ganar
+        if (!ganar(tablero)) {//Si al colocar 3 fichas nadie ha ganado, procedemos a moverlas
+            turnoMover(ficha, tablero);//Se siguen moviendo piezas hasta ganar
         }
     }
 
@@ -85,11 +84,11 @@ public class Proyecto_Tic_Tac_Toe {
                     System.out.println("¡Felicidades, has ganado!");
                 }
             }
-            
-                 colocarMaquina(ficha, tablero);//La máquina va a colocar ahora su ficha, gane o pierda. De no hacerlo, podría quedarse en 2 fichas y forzar otro bucle del do while.
-                 
+
+            colocarMaquina(ficha, tablero);//La máquina va a colocar ahora su ficha, gane o pierda. De no hacerlo, podría quedarse en 2 fichas y forzar otro bucle del do while.
+
 //Ahora necesitamos que no ejecute el resto del bucle si el jugador ha ganado, pero solo si hay 3 fichas o mas. De haber menos, Ganar siempre saldra True.
-            if ((comprobadorJugador(tablero,ficha)&&!ganar(tablero)) || (!comprobadorJugador(tablero,ficha))) {//En caso de que el jugador no haya ganado,mostramos el movimiento de la máquina ya realizado.
+            if ((comprobadorJugador(tablero, ficha) && !ganar(tablero)) || (!comprobadorJugador(tablero, ficha))) {//En caso de que el jugador no haya ganado,mostramos el movimiento de la máquina ya realizado.
                 System.out.println("Es el turno de la máquina. Este es su movimiento:");
                 mostrarMatriz(tablero);
 
@@ -250,7 +249,68 @@ public class Proyecto_Tic_Tac_Toe {
     }
 
     public static boolean ganar(char tablero[][]) {
+        int contadorX = 0;
+        int contadorY = 0;
+        char ficha = 'X';
+        char ficha2 = 'O';
 
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length; j++) {
+                if (tablero[i][j] == ficha) {
+                    contadorX++;
+                } else if (tablero[i][j] == ficha2) {
+                    contadorY++;
+                }
+                if (contadorX == 3 || contadorY == 3) {
+                    return true;
+                }
+            }
+            contadorX = 0;
+            contadorY = 0;
+        }
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length; j++) {
+                if (tablero[j][i] == ficha) {
+                    contadorX++;
+                } else if (tablero[j][i] == ficha2) {
+                    contadorY++;
+                }
+                if (contadorX == 3 || contadorY == 3) {
+                    return true;
+                }
+
+            }
+            contadorX = 0;
+            contadorY = 0;
+        }
+        for (int i = 0, j = 0; i < tablero.length; i++, j++) {
+            if (tablero[j][i] == ficha) {
+                contadorX++;
+            } else if (tablero[j][i] == ficha2) {
+                contadorY++;
+            }
+            if (contadorX == 3 || contadorY == 3) {
+                return true;
+            }
+        }
+        contadorX = 0;
+        contadorY = 0;
+
+        for (int i = tablero.length - 1, j = 0; j < tablero.length; i--, j++) {
+            if (tablero[j][i] == ficha) {
+                contadorX++;
+            } else if (tablero[j][i] == ficha2) {
+                contadorY++;
+            }
+            if (contadorX == 3 || contadorY == 3) {
+                return true;
+            }
+
+        }
+        return false;
+
+
+        /*
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero[i].length; j++) {
                 if (j == 0) {
@@ -276,7 +336,7 @@ public class Proyecto_Tic_Tac_Toe {
             }
         }
         return false;
-
+         */
     }
 
     public static boolean comprobadorJugador(char mat[][], int ficha) {
