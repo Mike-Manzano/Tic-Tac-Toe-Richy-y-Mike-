@@ -16,6 +16,11 @@ public class Proyecto_Tic_Tac_Toe {
         System.out.println("Comenzamos proyecto Tres En Raya");
         char tablero[][] = new char[3][3];
         rellenarTablero(tablero);
+        System.out.println("Elije empezar primero o segundo");
+        System.out.println("1.primero");
+        System.out.println("2.Segundo");
+        int empezar = sc.nextInt();
+
         System.out.println("Vamos a jugar una partida de tres en raya.");
         System.out.println("Elije la ficha");
         System.out.println("1. Ficha X");
@@ -26,10 +31,37 @@ public class Proyecto_Tic_Tac_Toe {
             ficha = sc.nextInt();
         }
 
-        turnoColocar(ficha, tablero);//Jugamos turnos hasta colocar 3 fichas.
+        turnoColocarPrimero(ficha, tablero);//Jugamos turnos hasta colocar 3 fichas.
         if (!ganar(tablero)) {//Si al colocar 3 fichas nadie ha ganado, procedemos a moverlas
-            turnoMover(ficha, tablero);//Se siguen moviendo piezas hasta ganar
+            turnoMoverPrimero(ficha, tablero);//Se siguen moviendo piezas hasta ganar
         }
+        
+    }
+
+    public static void turno(int empezar, char tablero[][]) {
+        Scanner sc = new Scanner(System.in);
+        switch (empezar) {
+            case 1:
+                System.out.println("Elije la ficha");
+                System.out.println("1. Ficha X");
+                System.out.println("2. Ficha O");
+                int ficha = sc.nextInt();
+                while ((ficha != 1) && (ficha != 2)) {
+                    System.out.println("Input incorrecto. Introduce 1 o 2 para elegir tu ficha");
+                    ficha = sc.nextInt();
+                }
+
+                turnoColocarPrimero(ficha, tablero);//Jugamos turnos hasta colocar 3 fichas.
+                if (!ganar(tablero)) {//Si al colocar 3 fichas nadie ha ganado, procedemos a moverlas
+                    turnoMoverPrimero(ficha, tablero);//Se siguen moviendo piezas hasta ganar
+                } else {
+                    System.out.println("Felicidades ganaste");
+                }
+                break;
+            case 2:
+                break;
+        }
+
     }
 
     public static void rellenarTablero(char mat1[][]) {
@@ -74,7 +106,7 @@ public class Proyecto_Tic_Tac_Toe {
         }
     }
 
-    public static void turnoColocar(int ficha, char tablero[][]) {
+    public static void turnoColocarPrimero(int ficha, char tablero[][]) {
         Scanner sc = new Scanner(System.in);
         do {
             colocarJugador(ficha, tablero);
@@ -91,19 +123,54 @@ public class Proyecto_Tic_Tac_Toe {
             if ((comprobadorJugador(tablero, ficha) && !ganar(tablero)) || (!comprobadorJugador(tablero, ficha))) {//En caso de que el jugador no haya ganado,mostramos el movimiento de la máquina ya realizado.
                 System.out.println("Es el turno de la máquina. Este es su movimiento:");
                 mostrarMatriz(tablero);
-
+                
                 if (comprobadorMaquina(tablero, ficha)) {//Comprobamos que la máquina haya puesto 3 fichas
                     if (ganar(tablero)) {//En caso de que tenga 3 fichas, comprobamos si ha ganado
                         System.out.println("Lo sentimos, la máquina ha ganado");
                     }
                 }
+                
+                
                 System.out.println();
 
             }
         } while (!comprobadorJugador(tablero, ficha) || !comprobadorMaquina(tablero, ficha));
     }
+    /*
+    public static void turnoColocarSegundo(int ficha, char tablero[][]) {
+        Scanner sc = new Scanner(System.in);
+        do {
+            colocarJugador(ficha, tablero);
+            mostrarMatriz(tablero);
+            if (comprobadorJugador(tablero, ficha)) {//Comprobamos si hay 3 fichas
+                if (ganar(tablero)) {//En caso de haberlas, comprobamos si el jugador ha 
+                    System.out.println("¡Felicidades, has ganado!");
+                }
+            }
 
-    public static void turnoMover(int ficha, char tablero[][]) {
+            colocarMaquina(ficha, tablero);//La máquina va a colocar ahora su ficha, gane o pierda. De no hacerlo, podría quedarse en 2 fichas y forzar otro bucle del do while.
+
+            //Ahora necesitamos que no ejecute el resto del bucle si el jugador ha ganado, pero solo si hay 3 fichas o mas. De haber menos, Ganar siempre saldra True.
+            if ((comprobadorJugador(tablero, ficha) && !ganar(tablero)) || (!comprobadorJugador(tablero, ficha))) {//En caso de que el jugador no haya ganado,mostramos el movimiento de la máquina ya realizado.
+                System.out.println("Es el turno de la máquina. Este es su movimiento:");
+                mostrarMatriz(tablero);
+                
+                if (comprobadorMaquina(tablero, ficha)) {//Comprobamos que la máquina haya puesto 3 fichas
+                    if (ganar(tablero)) {//En caso de que tenga 3 fichas, comprobamos si ha ganado
+                        System.out.println("Lo sentimos, la máquina ha ganado");
+                    }
+                }
+                
+                //parque para mirar, creo que no hace falta porque tenemos comprobacion despues al salir del metodo(Ricardo)
+                 
+                System.out.println();
+
+            }
+        } while (!comprobadorJugador(tablero, ficha) || !comprobadorMaquina(tablero, ficha));
+    }
+    */
+
+    public static void turnoMoverPrimero(int ficha, char tablero[][]) {
         char fichaJugador = '.';
 
         Scanner sc = new Scanner(System.in);
@@ -219,11 +286,19 @@ public class Proyecto_Tic_Tac_Toe {
         char fichaJugador = fichaJugador(ficha);
 
         Scanner sc = new Scanner(System.in);
-
         System.out.println("Escoge la fila de la ficha que quieres mover");//Solicitud de posición de la ficha a mover
         filSelect = sc.nextInt();
+        while (filSelect < 1 || filSelect > 3) {
+            System.out.println("Valor no valido introduzca uno nuevo");
+            filSelect = sc.nextInt();
+        }
         System.out.println("Escoge la columna de la ficha que quieres mover");
         colSelect = sc.nextInt();
+        while (colSelect < 1 || colSelect > 3) {
+            System.out.println("Valor no valido introduzca uno nuevo");
+            colSelect = sc.nextInt();
+        }
+
         while (tablero[filSelect - 1][colSelect - 1] != fichaJugador) {//Comprobación para evitar que seleccione espacios no ocupados por sus fichas
             System.out.println("Esta posición no contiene una de tus fichas. Introduce otra posición");
             System.out.println("Escoge la fila de la ficha que quieres mover");
@@ -235,8 +310,16 @@ public class Proyecto_Tic_Tac_Toe {
 
         System.out.println("Escoge la fila en la que vas a colocar la ficha");//Solicitud de posición a la que moverse
         filMover = sc.nextInt();
+        while (filMover < 1 || filMover > 3) {
+            System.out.println("Valor no valido introduzca uno nuevo");
+            colSelect = sc.nextInt();
+        }
         System.out.println("Escoge la columna en la que vas a colocar la ficha");
         colMover = sc.nextInt();
+        while (colMover < 1 || colMover > 3) {
+            System.out.println("Valor no valido introduzca uno nuevo");
+            colSelect = sc.nextInt();
+        }
         while (tablero[filMover - 1][colMover - 1] != '*') {//Comprobación para evitar que seleccione espacios no disponibles
             System.out.println("Esta posición no está vacía. Introduce otra posición");
             System.out.println("Escoge la fila de la ficha que quieres mover");
@@ -248,95 +331,80 @@ public class Proyecto_Tic_Tac_Toe {
         tablero[filMover - 1][colMover - 1] = fichaJugador;
     }
 
+    /**
+     * en este metodo haremos una lectura del tablero y detectara todas las
+     * posibles combinaciones de victoria.
+     *
+     * @param tablero
+     * @return false o true
+     */
     public static boolean ganar(char tablero[][]) {
         int contadorX = 0;
-        int contadorY = 0;
+        int contadorO = 0;
         char ficha = 'X';
         char ficha2 = 'O';
 
-        for (int i = 0; i < tablero.length; i++) {
+        for (int i = 0; i < tablero.length; i++) {//hacemos las lecturas en filas de victoria
             for (int j = 0; j < tablero[i].length; j++) {
-                if (tablero[i][j] == ficha) {
+                if (tablero[i][j] == ficha) {//si encuentra la ficha X se sumara 1 al contador X
                     contadorX++;
-                } else if (tablero[i][j] == ficha2) {
-                    contadorY++;
+                } else if (tablero[i][j] == ficha2) {//si encuentra la ficha O se sumara 1 al contador O
+                    contadorO++;
                 }
-                if (contadorX == 3 || contadorY == 3) {
+                if (contadorX == 3 || contadorO == 3) {//si uno de los dos llega a 3 significa que tiene 3 en ralla de fila y se devielve true 
                     return true;
                 }
-            }
+            }//si no se detecta en la primera fila la victoria se resetearan los contadores a 0 y se volvera a repetir
             contadorX = 0;
-            contadorY = 0;
+            contadorO = 0;
         }
-        for (int i = 0; i < tablero.length; i++) {
+        for (int i = 0; i < tablero.length; i++) {//en este se haria lo mismo que en el antierior pero con las comprobaciuones de columnas
             for (int j = 0; j < tablero[i].length; j++) {
                 if (tablero[j][i] == ficha) {
                     contadorX++;
                 } else if (tablero[j][i] == ficha2) {
-                    contadorY++;
+                    contadorO++;
                 }
-                if (contadorX == 3 || contadorY == 3) {
+                if (contadorX == 3 || contadorO == 3) {
                     return true;
                 }
+                contadorX = 0;
+                contadorO = 0;
 
             }
             contadorX = 0;
-            contadorY = 0;
+            contadorO = 0;
         }
+        //en este for haremos una comprobacion en diagonal de la parte superior izquierda a la inferior derecha 
+        //ya que la primera es 0,0 y la ultima 3,3 no es necesatio el doble for
         for (int i = 0, j = 0; i < tablero.length; i++, j++) {
             if (tablero[j][i] == ficha) {
                 contadorX++;
             } else if (tablero[j][i] == ficha2) {
-                contadorY++;
+                contadorO++;
             }
-            if (contadorX == 3 || contadorY == 3) {
+            if (contadorX == 3 || contadorO == 3) {
                 return true;
             }
         }
+        //se deben resetear los contadores a 0 siempre que se haga una comprobacion nueva
         contadorX = 0;
-        contadorY = 0;
+        contadorO = 0;
 
+        //en este for haremos una comprobacion en diagonal de la parte superior derecha a la inferior izquierda 
+        //ya que la primera es 0,2 y la ultima 2,0, se ira restando a uno y sumando a otro 
         for (int i = tablero.length - 1, j = 0; j < tablero.length; i--, j++) {
             if (tablero[j][i] == ficha) {
                 contadorX++;
             } else if (tablero[j][i] == ficha2) {
-                contadorY++;
+                contadorO++;
             }
-            if (contadorX == 3 || contadorY == 3) {
+            if (contadorX == 3 || contadorO == 3) {
                 return true;
             }
 
         }
         return false;
-
-
-        /*
-        for (int i = 0; i < tablero.length; i++) {
-            for (int j = 0; j < tablero[i].length; j++) {
-                if (j == 0) {
-                    if (tablero[i][j] == tablero[i][j + 1] && tablero[i][j] == tablero[i][j + 2]) {
-                        return true;
-                    }
-
-                }
-                if (i == 0) {
-                    if (tablero[i][j] == tablero[i + 1][j] && tablero[i][j] == tablero[i + 2][j]) {
-                        return true;
-                    }
-                }
-                if (j == 1 && i == 1) {
-                    if (tablero[i][j] == tablero[i - 1][j - 1] && tablero[i][j] == tablero[i + 1][j + 1]) {
-                        return true;
-                    }
-                    if (tablero[i][j] == tablero[i - 1][j + 1] && tablero[i][j] == tablero[i + 1][j - 1]) {
-                        return true;
-                    }
-                }
-
-            }
-        }
-        return false;
-         */
     }
 
     public static boolean comprobadorJugador(char mat[][], int ficha) {
