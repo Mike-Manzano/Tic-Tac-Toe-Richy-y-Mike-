@@ -15,35 +15,20 @@ public class Proyecto_Tic_Tac_Toe {
         Scanner sc = new Scanner(System.in);
         System.out.println("Comenzamos proyecto Tres En Raya");
         char tablero[][] = new char[3][3];
-        int trackerJugador[]= new int[2];
-        int trackerMaquina[]= new int[2];
+        int trackerJugador[] = new int[2];
+        int trackerMaquina[] = new int[2];
         rellenarTablero(tablero);
         System.out.println("Elije empezar primero o segundo");
         System.out.println("1.primero");
         System.out.println("2.Segundo");
         int empezar = sc.nextInt();
-
-        System.out.println("Vamos a jugar una partida de tres en raya.");
-        System.out.println("Elije la ficha");
-        System.out.println("1. Ficha X");
-        System.out.println("2. Ficha O");
-        int ficha = sc.nextInt();
-        while ((ficha != 1) && (ficha != 2)) {
-            System.out.println("Input incorrecto. Introduce 1 o 2 para elegir tu ficha");
-            ficha = sc.nextInt();
-        }
-
-        turnoColocarPrimero(ficha, tablero);//Jugamos turnos hasta colocar 3 fichas.
-        if (!ganar(tablero)) {//Si al colocar 3 fichas nadie ha ganado, procedemos a moverlas
-            turnoMoverPrimero(ficha, tablero);//Se siguen moviendo piezas hasta ganar
-        }
-        
+        turno(empezar, tablero);
     }
 
     public static void turno(int empezar, char tablero[][]) {
         Scanner sc = new Scanner(System.in);
         switch (empezar) {
-            case 1:
+            case 1: {
                 System.out.println("Elije la ficha");
                 System.out.println("1. Ficha X");
                 System.out.println("2. Ficha O");
@@ -56,12 +41,25 @@ public class Proyecto_Tic_Tac_Toe {
                 turnoColocarPrimero(ficha, tablero);//Jugamos turnos hasta colocar 3 fichas.
                 if (!ganar(tablero)) {//Si al colocar 3 fichas nadie ha ganado, procedemos a moverlas
                     turnoMoverPrimero(ficha, tablero);//Se siguen moviendo piezas hasta ganar
-                } else {
-                    System.out.println("Felicidades ganaste");
                 }
-                break;
-            case 2:
-                break;
+            }
+            break;
+            case 2: {
+                System.out.println("Elije la ficha");
+                System.out.println("1. Ficha X");
+                System.out.println("2. Ficha O");
+                int ficha = sc.nextInt();
+                while ((ficha != 1) && (ficha != 2)) {
+                    System.out.println("Input incorrecto. Introduce 1 o 2 para elegir tu ficha");
+                    ficha = sc.nextInt();
+                }
+
+                turnoColocarSegundo(ficha, tablero);//Jugamos turnos hasta colocar 3 fichas.
+                if (!ganar(tablero)) {//Si al colocar 3 fichas nadie ha ganado, procedemos a moverlas
+                    turnoMoverSegundo(ficha, tablero);//Se siguen moviendo piezas hasta ganar
+                }
+            }
+            break;
         }
 
     }
@@ -113,64 +111,42 @@ public class Proyecto_Tic_Tac_Toe {
         do {
             colocarJugador(ficha, tablero);
             mostrarMatriz(tablero);
-            if (comprobadorJugador(tablero, ficha)) {//Comprobamos si hay 3 fichas
-                if (ganar(tablero)) {//En caso de haberlas, comprobamos si el jugador ha 
-                    System.out.println("¡Felicidades, has ganado!");
-                }
-            }
-
-            colocarMaquina(ficha, tablero);//La máquina va a colocar ahora su ficha, gane o pierda. De no hacerlo, podría quedarse en 2 fichas y forzar otro bucle del do while.
-
-//Ahora necesitamos que no ejecute el resto del bucle si el jugador ha ganado.
-            if ((!ganar(tablero))) {//En caso de que el jugador no haya ganado,mostramos el movimiento de la máquina ya realizado.
-                System.out.println("Es el turno de la máquina. Este es su movimiento:");
+            
+            if (!ganar(tablero)) {
+                colocarMaquina(ficha, tablero);//La máquina va a colocar ahora su ficha, gane o pierda. De no hacerlo, podría quedarse en 2 fichas y forzar otro bucle del do while.
                 mostrarMatriz(tablero);
-                
-                if (comprobadorMaquina(tablero, ficha)) {//Comprobamos que la máquina haya puesto 3 fichas
-                    if (ganar(tablero)) {//En caso de que tenga 3 fichas, comprobamos si ha ganado
-                        System.out.println("Lo sentimos, la máquina ha ganado");
-                    }
+                if (ganar(tablero)) {
+                    System.out.println("lo siento gano la paquina");
                 }
-                
-                
-                System.out.println();
+            }else{
+                    System.out.println("Felicidades ganaste");
+                }
 
-            }
-        } while (!comprobadorJugador(tablero, ficha) || !comprobadorMaquina(tablero, ficha));
+            System.out.println();
+
+        } while (!comprobadorJugador(tablero, ficha));
     }
-    /*
+
     public static void turnoColocarSegundo(int ficha, char tablero[][]) {
         Scanner sc = new Scanner(System.in);
         do {
-            colocarJugador(ficha, tablero);
-            mostrarMatriz(tablero);
-            if (comprobadorJugador(tablero, ficha)) {//Comprobamos si hay 3 fichas
-                if (ganar(tablero)) {//En caso de haberlas, comprobamos si el jugador ha 
-                    System.out.println("¡Felicidades, has ganado!");
-                }
-            }
-
             colocarMaquina(ficha, tablero);//La máquina va a colocar ahora su ficha, gane o pierda. De no hacerlo, podría quedarse en 2 fichas y forzar otro bucle del do while.
+            mostrarMatriz(tablero);
 
-            //Ahora necesitamos que no ejecute el resto del bucle si el jugador ha ganado, pero solo si hay 3 fichas o mas. De haber menos, Ganar siempre saldra True.
-            if ((comprobadorJugador(tablero, ficha) && !ganar(tablero)) || (!comprobadorJugador(tablero, ficha))) {//En caso de que el jugador no haya ganado,mostramos el movimiento de la máquina ya realizado.
-                System.out.println("Es el turno de la máquina. Este es su movimiento:");
+            if (!ganar(tablero)) {
+                colocarJugador(ficha, tablero);
                 mostrarMatriz(tablero);
-                
-                if (comprobadorMaquina(tablero, ficha)) {//Comprobamos que la máquina haya puesto 3 fichas
-                    if (ganar(tablero)) {//En caso de que tenga 3 fichas, comprobamos si ha ganado
-                        System.out.println("Lo sentimos, la máquina ha ganado");
-                    }
+                if (ganar(tablero)) {
+                    System.out.println("Felicidades, ganaste");
                 }
-                
-                //parque para mirar, creo que no hace falta porque tenemos comprobacion despues al salir del metodo(Ricardo)
-                 
-                System.out.println();
-
+            } else {
+                System.out.println("gano la maquina");
             }
-        } while (!comprobadorJugador(tablero, ficha) || !comprobadorMaquina(tablero, ficha));
+
+            System.out.println();
+
+        } while (!comprobadorMaquina(tablero, ficha));
     }
-    */
 
     public static void turnoMoverPrimero(int ficha, char tablero[][]) {
         char fichaJugador = '.';
@@ -195,11 +171,39 @@ public class Proyecto_Tic_Tac_Toe {
             System.out.println("");
         } while (!ganar(tablero));
     }
-/**
- * Este método coloca una ficha en el tablero por parte de la máquina, de manera aleatoria y comprobando que su posición no está ocupada.
- * @param ficha
- * @param tablero 
- */
+
+    public static void turnoMoverSegundo(int ficha, char tablero[][]) {
+        char fichaJugador = '.';
+
+        Scanner sc = new Scanner(System.in);
+
+        do {
+            System.out.println("Es el turno de la máquina. Este es su movimiento:");
+            moverMaquina(ficha, tablero);
+            mostrarMatriz(tablero);
+
+            if (ganar(tablero)) {
+                System.out.println("Lo sentimos: La máquina ha ganado");
+            } else {
+                moverJugador(ficha, tablero);
+                mostrarMatriz(tablero);
+
+                if (ganar(tablero)) {
+                    System.out.println("¡Felicidades, has ganado!");
+                }
+            }
+
+            System.out.println("");
+        } while (!ganar(tablero));
+    }
+
+    /**
+     * Este método coloca una ficha en el tablero por parte de la máquina, de
+     * manera aleatoria y comprobando que su posición no está ocupada.
+     *
+     * @param ficha
+     * @param tablero
+     */
     public static void colocarMaquina(int ficha, char tablero[][]) {
         int fil;
         int col;
@@ -218,23 +222,26 @@ public class Proyecto_Tic_Tac_Toe {
         }
         tablero[fil][col] = fichaMaquina(ficha);
     }
-/**
- * Este metodo solicita al jugador una posición del tablero y le permite colocar una ficha en dicha posición. También comprueba que la posición no esté ocupada
- * @param ficha
- * @param tablero 
- */
+
+    /**
+     * Este metodo solicita al jugador una posición del tablero y le permite
+     * colocar una ficha en dicha posición. También comprueba que la posición no
+     * esté ocupada
+     *
+     * @param ficha
+     * @param tablero
+     */
     public static void colocarJugador(int ficha, char tablero[][]) {
         int filPoner;
         int colPoner;
-        char fichaJugador= fichaJugador(ficha);
+        char fichaJugador = fichaJugador(ficha);
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Escoge la fila en la que vas a colocar la ficha");
         filPoner = sc.nextInt();
         System.out.println("Escoge la columna en la que vas a colocar la ficha");
         colPoner = sc.nextInt();
-        
-        
+
         while (tablero[filPoner - 1][colPoner - 1] != '*') {//Comprobación para evitar que seleccione espacios ocupados
             System.out.println("Esta posición está ocupada. Introduce otra posición");
             System.out.println("Escoge la fila en la que vas a colocar la ficha");
@@ -247,9 +254,11 @@ public class Proyecto_Tic_Tac_Toe {
     }
 
     /**
-     *Este método realiza un movimiento aleatorio por parte de la máquina una vez esta ha colocado tres fichas,moviendo su ficha correspondiente y 
-     * comprobando que los lugares a los que mueve no estén ocupados previamente.
-     * Modifica la matriz de tablero de acuerdo a este movimiento
+     * Este método realiza un movimiento aleatorio por parte de la máquina una
+     * vez esta ha colocado tres fichas,moviendo su ficha correspondiente y
+     * comprobando que los lugares a los que mueve no estén ocupados
+     * previamente. Modifica la matriz de tablero de acuerdo a este movimiento
+     *
      * @param ficha
      * @param tablero
      *
@@ -275,12 +284,10 @@ public class Proyecto_Tic_Tac_Toe {
             do {
                 filSelect = (int) (Math.random() * 3);
                 colSelect = (int) (Math.random() * 3);
-            } while (fichaMaquina != 'X');
+            } while (tablero[filSelect][colSelect] != 'X');
 
         }
-
-        tablero[filSelect][colSelect] = '*'; //Dejamos en blanco el espacio de la ficha seleccionada para poder colocarla en otro espacio
-
+         
         fil = (int) (Math.random() * 3);//Seleccionamos espacio aleatorio y comprobamos que no esté ocupado
         col = (int) (Math.random() * 3);
         while (tablero[fil][col] != '*') {
@@ -294,18 +301,20 @@ public class Proyecto_Tic_Tac_Toe {
                 col = (int) (Math.random() * 3);
             }
         }
-
+        tablero[filSelect][colSelect] = '*'; //Dejamos en blanco el espacio de la ficha seleccionada para poder colocarla en otro espacio
         tablero[fil][col] = fichaMaquina;//Colocamos la pieza correspondiente
 
     }
 
     /**
-     * Este método realiza el turno del jugador en la situación de partida en la que debe mover las fichas en vez de colocarlas.
-     * Como parametros solicita la ficha que está usando el jugador y el tablero, y una vez ejecutado modfica la matriz de tablero para reflejar el desplazamiento de la ficha.
+     * Este método realiza el turno del jugador en la situación de partida en la
+     * que debe mover las fichas en vez de colocarlas. Como parametros solicita
+     * la ficha que está usando el jugador y el tablero, y una vez ejecutado
+     * modfica la matriz de tablero para reflejar el desplazamiento de la ficha.
+     *
      * @param ficha
-     * @param tablero 
+     * @param tablero
      */
-    
     public static void moverJugador(int ficha, char tablero[][]) {
         int filSelect;
         int colSelect;
@@ -361,7 +370,7 @@ public class Proyecto_Tic_Tac_Toe {
 
     /**
      * En este método haremos una lectura del tablero y detectara todas las
-     * posibles combinaciones de victoria. 
+     * posibles combinaciones de victoria.
      *
      * @param tablero
      * @return false o true
@@ -396,9 +405,6 @@ public class Proyecto_Tic_Tac_Toe {
                 if (contadorX == 3 || contadorO == 3) {
                     return true;
                 }
-                contadorX = 0;
-                contadorO = 0;
-
             }
             contadorX = 0;
             contadorO = 0;
@@ -436,12 +442,14 @@ public class Proyecto_Tic_Tac_Toe {
     }
 
     /**
- * Este método recorre el tablero y comprueba si el jugador ha colocado tres fichas, para pasar de colocar fichas a desplazarlas posteriormente.
- * @param mat
- * @param ficha
- * @return Devuelve true si hay tres fichas de la máquina presentes en el tablero.
- */
-    
+     * Este método recorre el tablero y comprueba si el jugador ha colocado tres
+     * fichas, para pasar de colocar fichas a desplazarlas posteriormente.
+     *
+     * @param mat
+     * @param ficha
+     * @return Devuelve true si hay tres fichas de la máquina presentes en el
+     * tablero.
+     */
     public static boolean comprobadorJugador(char mat[][], int ficha) {
         int contador = 0;
         int fichaJugador = fichaJugador(ficha);
@@ -454,18 +462,22 @@ public class Proyecto_Tic_Tac_Toe {
             }
         }
 
-        if (contador >= 3) {
+        if (contador == 3) {
             return true;
         } else {
             return false;
         }
     }
-/**
- * Este método recorre el tablero y comprueba si la máquina ha colocado tres fichas, para pasar de colocar fichas a desplazarlas posteriormente.
- * @param mat
- * @param ficha
- * @return Devuelve true si hay tres fichas de la máquina presentes en el tablero.
- */
+
+    /**
+     * Este método recorre el tablero y comprueba si la máquina ha colocado tres
+     * fichas, para pasar de colocar fichas a desplazarlas posteriormente.
+     *
+     * @param mat
+     * @param ficha
+     * @return Devuelve true si hay tres fichas de la máquina presentes en el
+     * tablero.
+     */
     public static boolean comprobadorMaquina(char mat[][], int ficha) {
         int contador = 0;
         int fichaMaquina = fichaMaquina(ficha);
@@ -478,14 +490,14 @@ public class Proyecto_Tic_Tac_Toe {
             }
         }
 
-        if (contador >= 3) {
+        if (contador == 3) {
             return true;
         } else {
             return false;
         }
     }
-    
+
     public static void trackerJugador(String[] args) {
-        
+
     }
 }
